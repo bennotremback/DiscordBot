@@ -55,22 +55,6 @@ const wolframAlpha = (message) => {
 			});
 		}
 	}).catch(console.log);
-
-	// waClient.getFull({ input: query, ip: '52.41.96.17', mag: '1' }).then(result => {
-	// 	if(!result.success) return;
-	// 	const primaryPod = result.pods.find(pod => {
-	// 		return pod.primary !== undefined;
-	// 	});
-
-
-	// 	if(!primaryPod) return;
-	// 	message.channel.send({
-	// 		files: [{
-	// 			attachment: primaryPod.subpods[0].img.src,
-	// 			name: 'result.gif',
-	// 		}],
-	// 	});
-	// }).catch(console.log);
 };
 
 module.exports = {
