@@ -6,7 +6,7 @@ const { config } = require('./config');
 const client = new discord.Client();
 const token = config.discordAuthToken;
 
-client.commands = new Map();
+client.commands = [];
 client.listeners = [];
 
 const pluginFiles = fs.readdirSync('./plugins');
@@ -18,10 +18,16 @@ pluginFiles.forEach((file) => {
 			client.listeners.push(command);
 		}
 		else {
-			client.commands.set(command.trigger, command);
+			client.commands.push({ triggers: command.triggers, execute: command.execute });
 		}
 	});
 });
+
+const findCommand = (cmdString) => {
+	return client.commands.find(command => {
+		return command.triggers.includes(cmdString);
+	});
+};
 
 client.on('ready', () => {
 	console.log('Ready');
@@ -38,7 +44,7 @@ client.on('message', message => {
 
 	const command = message.content.split(/ +/).shift().toLowerCase();
 
-	if(!client.commands.has(command)) return;
+	if(!findCommand(command)) return;
 
 	const argsRegex = /(?:"(.+?)"|([\w]+))+/g;
 	let m;
@@ -53,7 +59,7 @@ client.on('message', message => {
 
 	args.shift();
 
-	client.commands.get(command).execute(message, args);
+	findCommand(command).execute(message, args);
 });
 
 client.login(token);

@@ -42,11 +42,11 @@ module.exports = {
 	name: 'Gifs',
 	commands: [
 		{
-			trigger: '!gif',
+			triggers: ['!gif'],
 			execute: gif,
 		},
 		{
-			trigger: '!gifr',
+			triggers: ['!gifr'],
 			execute: gifRandom,
 		},
 	],

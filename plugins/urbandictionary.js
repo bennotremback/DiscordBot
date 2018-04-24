@@ -28,7 +28,7 @@ module.exports = {
 	name: 'Urban Dictionary',
 	commands: [
 		{
-			trigger: '!ud',
+			triggers: ['!ud'],
 			execute: urbanDictionary,
 		},
 	],

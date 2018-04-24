@@ -16,11 +16,11 @@ module.exports = {
 	name: '8ball',
 	commands: [
 		{
-			trigger: '!8',
+			triggers: ['!8', '!8ball'],
 			execute: _8ball,
 		},
 		{
-			trigger: '!choose',
+			triggers: ['!choose'],
 			execute: choose,
 		},
 	],

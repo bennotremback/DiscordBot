@@ -80,7 +80,7 @@ module.exports = {
 	commands: [
 		{
 			execute: weather,
-			trigger: '!we',
+			triggers: ['!we', '!weather'],
 		},
 	],
 };

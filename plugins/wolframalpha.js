@@ -62,7 +62,7 @@ module.exports = {
 	commands: [
 		{
 			execute: wolframAlpha,
-			trigger: '!wa',
+			triggers: ['!wa', '!wolframalpha'],
 		},
 	],
 };

@@ -56,7 +56,7 @@ module.exports = {
 	commands: [
 		{
 			execute: poll,
-			trigger: '!poll',
+			triggers: ['!poll'],
 		},
 		{
 			execute: pollListener,
