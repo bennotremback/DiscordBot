@@ -23,11 +23,11 @@ const stockPrice = (message) => {
 
 			if(quote.marketState == 'POST') {
 				price = quote.postMarketPrice;
-				change = quote.postMarketChangePercent;
+				change = quote.postMarketChangePercent.toFixed(2);
 			}
 
 			let messageResult = `${symbol} - ${name} : ${price} (${change}%)`;
-			if(quote.marketState == 'POST') messageResult += '[After Hours]';
+			if(quote.marketState == 'POST') messageResult += ' [After Hours]';
 			message.channel.send(messageResult);
 		}).catch(error => {
 			// Invalid stock symbol
