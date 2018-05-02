@@ -18,10 +18,16 @@ const stockPrice = (message) => {
 			const currency = quote.currency;
 			const symbol = quote.symbol;
 			const name = quote.longName;
-			const change = (((price - prevClose) / prevClose) * 100).toFixed(2);
+			let change = (((price - prevClose) / prevClose) * 100).toFixed(2);
 			price = price.toLocaleString('en-US', { style: 'currency', currency: currency });
 
-			const messageResult = `${symbol} - ${name} : ${price} (${change}%)`;
+			if(quote.marketState == 'POST') {
+				price = quote.postMarketPrice;
+				change = quote.postMarketChangePercent;
+			}
+
+			let messageResult = `${symbol} - ${name} : ${price} (${change}%)`;
+			if(quote.marketState == 'POST') messageResult += '[After Hours]';
 			message.channel.send(messageResult);
 		}).catch(error => {
 			// Invalid stock symbol
