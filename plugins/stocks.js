@@ -23,6 +23,7 @@ const stockPrice = (message) => {
 
 			if(quote.marketState == 'POST') {
 				price = quote.postMarketPrice;
+				price = price.toLocaleString('en-US', { style: 'currency', currency: currency });
 				change = quote.postMarketChangePercent.toFixed(2);
 			}
 
