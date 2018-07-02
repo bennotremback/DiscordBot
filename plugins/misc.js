@@ -1,3 +1,7 @@
+const gtranslate = require('google-translate-api');
+const languages = require('country-data').languages;
+const lookup = require('country-data').lookup;
+
 const _8ball = (message) => {
 	const answers = [
 		'Yes',
@@ -12,6 +16,22 @@ const choose = (message, args) => {
 	message.channel.send(choice);
 };
 
+const translate = (message, args) => {
+	let language = 'en';
+	if(args[0].startsWith('to=')) {
+		const country = args[0].replace('to=', '');
+		const foundLang = languages.all.find(el => {
+			return el.name.toLowerCase() == country.toLowerCase();
+		});
+		if(foundLang != undefined)
+			language = foundLang.alpha2;
+		args.shift();
+	}
+	gtranslate(args.join(" "), {to: language}).then(res => {
+		message.channel.send(res.text);
+	});
+};
+
 module.exports = {
 	name: '8ball',
 	commands: [
@@ -22,6 +42,10 @@ module.exports = {
 		{
 			triggers: ['!choose'],
 			execute: choose,
+		},
+		{
+			triggers: ['!translate', '!tr'],
+			execute: translate,
 		},
 	],
 };

@@ -10,9 +10,11 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
+    "country-data": "0.0.31",
     "countrynames": "^0.1.1",
     "discord.js": "^11.3.2",
     "erlpack": "github:discordapp/erlpack",
+    "google-translate-api": "^2.3.0",
     "jimp": "^0.2.28",
     "sharp": "^0.20.1",
     "snekfetch": "^3.6.4",
