@@ -2,14 +2,14 @@ const discord = require('discord.js');
 const snekfetch = require('snekfetch');
 const { config } = require('../config');
 
-const weather = (message, args) => {
-	const queryLocation = args.join(' ');
+const weather = (message) => {
+	const queryLocation = message.argsString;
 
 	const weatherApi = 'http://api.openweathermap.org/data/2.5/weather';
 	const weatherKey = config.openWeatherMapKey;
 
-	const geocodeKey = config.googleGeocodeKey;
 	const geocodeApi = 'https://maps.googleapis.com/maps/api/geocode/json';
+	const geocodeKey = config.googleGeocodeKey;
 
 	if(config.geocodeWeather) {
 		snekfetch.get(geocodeApi, {
@@ -50,6 +50,7 @@ const processWeatherResponse = (response, address) => {
 	condition = condition.charAt(0).toUpperCase() + condition.slice(1);
 	const conditionIcon = response.body.weather[0].icon;
 	const temperature = response.body.main.temp;
+	// temperatures are returned in kelvin, we need to convert first
 	const tempF = (9 / 5 * (temperature - 273) + 32).toFixed(1);
 	const tempC = (temperature - 273).toFixed(1);
 	const pressure = response.body.main.pressure;

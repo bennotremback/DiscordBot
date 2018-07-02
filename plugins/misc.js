@@ -1,6 +1,5 @@
 const gtranslate = require('google-translate-api');
 const languages = require('country-data').languages;
-const lookup = require('country-data').lookup;
 
 const _8ball = (message) => {
 	const answers = [
@@ -23,11 +22,14 @@ const translate = (message, args) => {
 		const foundLang = languages.all.find(el => {
 			return el.name.toLowerCase() == country.toLowerCase();
 		});
-		if(foundLang != undefined)
+
+		if (foundLang != undefined) {
 			language = foundLang.alpha2;
+		}
+
 		args.shift();
 	}
-	gtranslate(args.join(" "), {to: language}).then(res => {
+	gtranslate(args.join(' '), { to: language }).then(res => {
 		message.channel.send(res.text);
 	});
 };

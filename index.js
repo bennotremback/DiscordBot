@@ -46,7 +46,7 @@ client.on('message', message => {
 
 	if(!findCommand(command)) return;
 
-	const argsRegex = /(?:"(.+?)"|([\w]+))+/g;
+	const argsRegex = /(?:"(.+?)"|([\w-=]+))+/g;
 	let m;
 	const args = [];
 
@@ -58,6 +58,8 @@ client.on('message', message => {
 	}
 
 	args.shift();
+
+	message.argsString = args.join(' ');
 
 	findCommand(command).execute(message, args);
 });

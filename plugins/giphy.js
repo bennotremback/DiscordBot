@@ -4,8 +4,8 @@ const { config } = require('../config');
 const giphyKey = config.giphyKey;
 const giphyApi = 'https://api.giphy.com/v1/gifs/';
 
-const gif = (message, args) => {
-	const query = args.join(' ');
+const gif = (message) => {
+	const query = message.argsString;
 
 	snekfetch.get(giphyApi + 'search', {
 		query: {
@@ -21,8 +21,8 @@ const gif = (message, args) => {
 	});
 };
 
-const gifRandom = (message, args) => {
-	const query = args.join(' ');
+const gifRandom = (message) => {
+	const query = message.argsString;
 
 	snekfetch.get(giphyApi + 'random', {
 		query: {
