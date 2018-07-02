@@ -21,14 +21,14 @@ const stockPrice = (message) => {
 			let change = (((price - prevClose) / prevClose) * 100).toFixed(2);
 			price = price.toLocaleString('en-US', { style: 'currency', currency: currency });
 
-			if(quote.marketState.includes('POST')) {
+			if(quote.marketState.includes('POST') && quote.market == "us_market") {
 				price = quote.postMarketPrice;
 				price = price.toLocaleString('en-US', { style: 'currency', currency: currency });
 				change = quote.postMarketChangePercent.toFixed(2);
 			}
 
 			let messageResult = `${symbol} - ${name} : ${price} (${change}%)`;
-			if(quote.marketState.includes('POST')) messageResult += ' [After Hours]';
+			if(quote.marketState.includes('POST') && quote.market == "us_market") messageResult += ' [After Hours]';
 			message.channel.send(messageResult);
 		}).catch(error => {
 			// Invalid stock symbol
