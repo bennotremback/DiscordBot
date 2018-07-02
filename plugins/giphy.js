@@ -24,17 +24,19 @@ const gif = (message) => {
 const gifRandom = (message) => {
 	const query = message.argsString;
 
-	snekfetch.get(giphyApi + 'random', {
+	snekfetch.get(giphyApi + 'search', {
 		query: {
 			api_key: giphyKey,
-			tag: query,
+			q: query,
+			limit: 100,
 		},
 	}).then(response => {
 		if(response.body.data.length < 1) return;
 
 		const gifResp = response.body.data;
+		const gifIdx = Math.floor(Math.random() * response.body.pagination.count);
 
-		message.channel.send(gifResp.url);
+		message.channel.send(gifResp[gifIdx].url);
 	});
 };
 
