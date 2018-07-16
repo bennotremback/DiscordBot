@@ -46,7 +46,7 @@ client.on('message', message => {
 
 	if(!findCommand(command)) return;
 
-	const argsRegex = /(?:"(.+?)"|([\w-=]+))+/g;
+	const argsRegex = /([^\s"']+)|"([^"]*)"|'([^']*)'/g;
 	let m;
 	const args = [];
 
