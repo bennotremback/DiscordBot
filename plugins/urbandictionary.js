@@ -2,7 +2,7 @@ const snekfetch = require('snekfetch');
 
 const urbanDictionary = (message, args) => {
 	let definitionNum = NaN;
-	if(args.length > 2) {
+	if(args.length > 1) {
 		definitionNum = Number(args[args.length - 1]);
 		if(!Number.isNaN(definitionNum)) args.pop();
 	}
