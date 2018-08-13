@@ -2,6 +2,7 @@ const discord = require('discord.js');
 const fs = require('fs');
 const { updatePlaying } = require('./plugins/crypto');
 const { config } = require('./config');
+const { checkScores } = require('./plugins/fantasy');
 
 const client = new discord.Client();
 const token = config.discordAuthToken;
@@ -29,10 +30,26 @@ const findCommand = (cmdString) => {
 	});
 };
 
+const scoreUpdate = () => {
+	checkScores((retn) => {
+		if(!retn) return;
+		let msg = '';
+		msg += 'New fantasy scores: \n';
+		JSON.parse(retn).forEach(result => {
+			msg += `**${result.rank}**: `;
+			msg += `${result.entry_name} - ${result.total}`;
+			msg += '\n';
+		});
+		client.channels.get('105433664761933824').send(msg);
+	});
+};
+
 client.on('ready', () => {
 	console.log('Ready');
 	updatePlaying(client);
+	scoreUpdate();
 	setInterval(updatePlaying, 60 * 5 * 1000, client);
+	setInterval(scoreUpdate, 60 * 5 * 1000);
 });
 
 client.on('message', message => {
