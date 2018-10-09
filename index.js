@@ -1,6 +1,7 @@
 const discord = require('discord.js');
 const fs = require('fs');
 const { updatePlaying } = require('./plugins/crypto');
+const { updateStockPlaying } = require('./plugins/stocks');
 const { config } = require('./config');
 const { checkScores } = require('./plugins/fantasy');
 
@@ -46,9 +47,9 @@ const scoreUpdate = () => {
 
 client.on('ready', () => {
 	console.log('Ready');
-	updatePlaying(client);
+	updateStockPlaying(client);
 	scoreUpdate();
-	setInterval(updatePlaying, 60 * 5 * 1000, client);
+	setInterval(updateStockPlaying, 60 * 5 * 1000, client);
 	setInterval(scoreUpdate, 60 * 5 * 1000);
 });
 
