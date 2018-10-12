@@ -12,9 +12,10 @@ const urbanDictionary = (message, args) => {
 	snekfetch.get(udApi, { query: { term: query } })
 		.then(response => {
 			if(response.body.result_type == 'no_results') return;
-			const definitionList = response.body.list;
+			let definitionList = response.body.list;
+			definitionList = definitionList.filter(def => query.toLowerCase() == def.word.toLowerCase());
 			const numDefinitions = definitionList.length;
-			if(!Number.isNaN(definitionNum) && definitionNum > numDefinitions) return;
+			if((!Number.isNaN(definitionNum) && definitionNum > numDefinitions) || numDefinitions == 0) return;
 			const currentNum = Number.isNaN(definitionNum) ? 1 : definitionNum;
 
 			let messageResult = `\n**Definition #${currentNum} out of ${numDefinitions}:**\n`;
