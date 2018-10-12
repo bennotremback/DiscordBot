@@ -28,10 +28,32 @@ const translate = (message, args) => {
 		}
 
 		args.shift();
+
+		gtranslate(args.join(' '), { to: language }).then(res => {
+			message.channel.send(res.text);
+		});
 	}
-	gtranslate(args.join(' '), { to: language }).then(res => {
-		message.channel.send(res.text);
-	});
+	else if(args[0].startsWith('from=')) {
+		const country = args[0].replace('from=', '');
+		const foundLang = languages.all.find(el => {
+			return el.name.toLowerCase() == country.toLowerCase();
+		});
+
+		if (foundLang != undefined) {
+			const fromLang = foundLang.alpha2;
+			args.shift();
+			gtranslate(args.join(' '), { to: language, from: fromLang }).then(res => {
+				message.channel.send(res.text);
+			});
+		}
+		else {
+			args.shift();
+			gtranslate(args.join(' '), { to: language }).then(res => {
+				message.channel.send(res.text);
+			});
+		}
+
+	}
 };
 
 module.exports = {
