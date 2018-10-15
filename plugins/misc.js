@@ -54,6 +54,11 @@ const translate = (message, args) => {
 		}
 
 	}
+	else {
+		gtranslate(args.join(' '), { to: language }).then(res => {
+			message.channel.send(res.text);
+		});
+	}
 };
 
 module.exports = {
