@@ -38,7 +38,7 @@ const scoreUpdate = () => {
 		msg += 'New fantasy scores: \n';
 		JSON.parse(retn).forEach(result => {
 			msg += `**${result.rank}**: `;
-			msg += `${result.entry_name} - ${result.total}`;
+			msg += `${result.entry_name} - ${result.total} ( ${result.event_total} )`;
 			msg += '\n';
 		});
 		client.channels.get('105433664761933824').send(msg);

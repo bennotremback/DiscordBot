@@ -45,7 +45,7 @@ const scores = (message) => {
 	msg += 'Fantasy Scores:\n';
 	oldScores.forEach(result => {
 		msg += `**${result.rank}**: `;
-		msg += `${result.entry_name} - ${result.total}`;
+		msg += `${result.entry_name} - ${result.total} ( ${result.event_total} )`;
 		msg += '\n';
 	});
 
