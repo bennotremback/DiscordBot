@@ -57,8 +57,8 @@ client.on('message', message => {
 	processMessage(message);
 });
 
-client.on('messageUpdate', message => {
-	processMessage(message);
+client.on('messageUpdate', (oldMessage, newMessage) => {
+	processMessage(newMessage);
 });
 
 const processMessage = (message) => {
