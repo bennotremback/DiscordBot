@@ -54,6 +54,14 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
+	processMessage(message);
+});
+
+client.on('messageUpdate', message => {
+	processMessage(message);
+});
+
+const processMessage = (message) => {
 	if(message.author.bot) return;
 
 	client.listeners.forEach(listener => {
@@ -80,6 +88,6 @@ client.on('message', message => {
 	message.argsString = args.join(' ');
 
 	findCommand(command).execute(message, args);
-});
+}
 
 client.login(token);
