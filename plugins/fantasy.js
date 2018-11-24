@@ -38,18 +38,23 @@ const checkScores = (cb) => {
 };
 
 const scores = (message) => {
-	let oldScores = fs.readFileSync('scores.json');
-	oldScores = JSON.parse(oldScores);
+	const apiUrl = 'https://fantasy.premierleague.com/drf/leagues-classic-standings/92365?phase=1&le-page=1&ls-page=1';
 
-	let msg = '';
-	msg += 'Fantasy Scores:\n';
-	oldScores.forEach(result => {
-		msg += `**${result.rank}**: `;
-		msg += `${result.entry_name} - ${result.total} (${result.event_total})`;
-		msg += '\n';
-	});
+	snekfetch.get(apiUrl)
+		.then(response => {
 
-	message.channel.send(msg);
+			const curScores = response.body.standings.results;
+
+			let msg = '';
+			msg += 'Fantasy Scores:\n';
+			curScores.forEach(result => {
+				msg += `**${result.rank}**: `;
+				msg += `${result.entry_name} - ${result.total} (${result.event_total})`;
+				msg += '\n';
+			});
+
+			message.channel.send(msg);
+		});
 };
 
 module.exports = {
