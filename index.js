@@ -72,7 +72,7 @@ const processMessage = (message) => {
 
 	if(!findCommand(command)) return;
 
-	const argsRegex = /([^\s"']+)|"([^"]*)"|'([^']*)'/g;
+	const argsRegex = /"([^"]*)"|'([^']*)'|([^\s]+)/g;
 	let m;
 	const args = [];
 
@@ -88,6 +88,6 @@ const processMessage = (message) => {
 	message.argsString = args.join(' ');
 
 	findCommand(command).execute(message, args);
-}
+};
 
 client.login(token);
