@@ -5,67 +5,43 @@ const { config } = require('../config');
 const weather = (message) => {
 	const queryLocation = message.argsString;
 
-	const weatherApi = 'http://api.openweathermap.org/data/2.5/weather';
-	const weatherKey = config.openWeatherMapKey;
+	const weatherApi = 'https://api.darksky.net/forecast/';
+	const weatherKey = config.darkskyKey;
 
 	const geocodeApi = 'https://maps.googleapis.com/maps/api/geocode/json';
 	const geocodeKey = config.googleGeocodeKey;
 
-	if(config.geocodeWeather) {
-		snekfetch.get(geocodeApi, {
-			query: {
-				address: queryLocation,
-				key: geocodeKey,
-			},
-		}).then(geocodeResponse => {
-			if(geocodeResponse.body.status == 'ZERO_RESULTS') return;
-			const location = geocodeResponse.body.results[0].geometry.location;
-			const address = geocodeResponse.body.results[0].formatted_address;
+	snekfetch.get(geocodeApi, {
+		query: {
+			address: queryLocation,
+			key: geocodeKey,
+		},
+	}).then(geocodeResponse => {
+		if(geocodeResponse.body.status == 'ZERO_RESULTS') return;
+		const location = geocodeResponse.body.results[0].geometry.location;
+		const address = geocodeResponse.body.results[0].formatted_address;
 
-			snekfetch.get(weatherApi, {
-				query: {
-					appid: weatherKey,
-					lat: location.lat,
-					lon: location.lng,
-				},
-			}).then(weatherResponse => {
-				message.channel.send(processWeatherResponse(weatherResponse, address));
-			}).catch(console.log);
+		snekfetch.get(weatherApi + weatherKey + '/' + location.lat + ',' + location.lng).then(weatherResponse => {
+			message.channel.send(processWeatherResponse(weatherResponse, address));
 		}).catch(console.log);
-	}
-	else {
-		snekfetch.get(weatherApi, {
-			query: {
-				appid: weatherKey,
-				q: queryLocation,
-			},
-		}).then(weatherResponse => {
-			message.channel.send(processWeatherResponse(weatherResponse));
-		}).catch(console.log);
-	}
+	}).catch(console.log);
 };
 
 const processWeatherResponse = (response, address) => {
-	let condition = response.body.weather[0].description;
-	condition = condition.charAt(0).toUpperCase() + condition.slice(1);
-	const conditionIcon = response.body.weather[0].icon;
-	const temperature = response.body.main.temp;
-	// temperatures are returned in kelvin, we need to convert first
-	const tempF = (9 / 5 * (temperature - 273) + 32).toFixed(1);
-	const tempC = (temperature - 273).toFixed(1);
-	const pressure = response.body.main.pressure;
-	const humidity = response.body.main.humidity;
-	const windSpeed = response.body.wind.speed;
-	const windSpeedMiles = (windSpeed * 2.2369).toFixed(1);
-	const windSpeedKm = (windSpeed * 3.6).toFixed(1);
-	if(!address) {
-		address = response.body.name + ', ' + response.body.sys.country;
-	}
+	const condition = response.body.currently.summary;
+	const temperature = response.body.currently.temperature;
+	// temperatures are returned in fahrenheit
+	const tempF = temperature.toFixed(1);
+	const tempC = ((temperature - 32) * (5 / 9)).toFixed(1);
+	const pressure = response.body.currently.pressure.toFixed(1);
+	const humidity = response.body.currently.humidity * 100;
+	const windSpeedMiles = response.body.currently.windSpeed.toFixed(1);
+	const windSpeedKm = (windSpeedMiles * 1.609344).toFixed(1);
 
 	const weatherEmbed = new discord.RichEmbed();
 	weatherEmbed.setTitle(' ');
 	weatherEmbed.setDescription('\n');
-	weatherEmbed.setAuthor(`${condition} in ${address}`, `http://openweathermap.org/img/w/${conditionIcon}.png`);
+	weatherEmbed.setAuthor(`${condition} in ${address}`);
 	weatherEmbed.setColor('0x00AE86');
 	weatherEmbed.setURL(' ');
 	weatherEmbed.addField('**Temperature**', `${tempC} °C\n${tempF} °F`, true);
