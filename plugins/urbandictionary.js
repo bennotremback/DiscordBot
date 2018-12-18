@@ -27,12 +27,31 @@ const urbanDictionary = (message, args) => {
 		}).catch(console.log);
 };
 
+const randomDef = (message) => {
+	const randomUdApi = 'http://api.urbandictionary.com/v0/random';
+	snekfetch.get(randomUdApi)
+		.then(response => {
+			if(response.body.result_type == 'no_results') return;
+			const definitionList = response.body.list;
+
+			let messageResult = `${definitionList[0].definition}\n\n`;
+			messageResult = messageResult + '**Example:**\n';
+			messageResult = messageResult + `${definitionList[0].example}`;
+
+			message.channel.send(messageResult, { split: true });
+		}).catch(console.log);
+};
+
 module.exports = {
 	name: 'Urban Dictionary',
 	commands: [
 		{
 			triggers: ['!ud'],
 			execute: urbanDictionary,
+		},
+		{
+			triggers: ['!udrandom', '!randomud', '!udrand'],
+			execute: randomDef,
 		},
 	],
 };
