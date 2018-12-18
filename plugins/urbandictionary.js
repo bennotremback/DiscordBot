@@ -34,7 +34,8 @@ const randomDef = (message) => {
 			if(response.body.result_type == 'no_results') return;
 			const definitionList = response.body.list;
 
-			let messageResult = `${definitionList[0].definition}\n\n`;
+			let messageResult = `\n**${definitionList[0].word}**\n`;
+			messageResult += `${definitionList[0].definition}\n\n`;
 			messageResult = messageResult + '**Example:**\n';
 			messageResult = messageResult + `${definitionList[0].example}`;
 
