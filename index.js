@@ -10,6 +10,8 @@ const token = config.discordAuthToken;
 
 client.commands = [];
 client.listeners = [];
+let stockPlayingInterval = null;
+let scoresInterval = null;
 
 const pluginFiles = fs.readdirSync('./plugins');
 pluginFiles.forEach((file) => {
@@ -49,8 +51,14 @@ client.on('ready', () => {
 	console.log('Ready');
 	updateStockPlaying(client);
 	scoreUpdate();
-	setInterval(updateStockPlaying, 60 * 5 * 1000, client);
-	setInterval(scoreUpdate, 60 * 5 * 1000);
+	stockPlayingInterval = setInterval(updateStockPlaying, 60 * 5 * 1000, client);
+	scoresInterval = setInterval(scoreUpdate, 60 * 5 * 1000);
+});
+
+client.on('reconnecting', () => {
+	console.log("Reconnecting...");
+	clearInterval(stockPlayingInterval);
+	clearInterval(scoresInterval);
 });
 
 client.on('message', message => {
