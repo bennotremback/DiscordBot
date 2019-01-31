@@ -51,14 +51,6 @@ client.on('ready', () => {
 	console.log('Ready');
 	updateStockPlaying(client);
 	scoreUpdate();
-	stockPlayingInterval = setInterval(updateStockPlaying, 60 * 5 * 1000, client);
-	scoresInterval = setInterval(scoreUpdate, 60 * 5 * 1000);
-});
-
-client.on('reconnecting', () => {
-	console.log("Reconnecting...");
-	clearInterval(stockPlayingInterval);
-	clearInterval(scoresInterval);
 });
 
 client.on('message', message => {
@@ -99,3 +91,5 @@ const processMessage = (message) => {
 };
 
 client.login(token);
+setInterval(scoreUpdate, 60 * 5 * 1000);
+setInterval(updateStockPlaying, 60 * 5 * 1000, client);
