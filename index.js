@@ -4,14 +4,13 @@ const { updatePlaying } = require('./plugins/crypto');
 const { updateStockPlaying } = require('./plugins/stocks');
 const { config } = require('./config');
 const { checkScores } = require('./plugins/fantasy');
+const moment = require('moment');
 
 const client = new discord.Client();
 const token = config.discordAuthToken;
 
 client.commands = [];
 client.listeners = [];
-let stockPlayingInterval = null;
-let scoresInterval = null;
 
 const pluginFiles = fs.readdirSync('./plugins');
 pluginFiles.forEach((file) => {
@@ -63,6 +62,19 @@ client.on('messageUpdate', (oldMessage, newMessage) => {
 
 const processMessage = (message) => {
 	if(message.author.bot) return;
+
+	const ignoreList = JSON.parse(fs.readFileSync('ignored.json'));
+
+	if(ignoreList.hasOwnProperty(message.author.id)) {
+		const endDate = moment(ignoreList[message.author.id]);
+		if(moment().isAfter(endDate)) {
+			delete ignoreList[message.author.id];
+			fs.writeFileSync('ignored.json', JSON.stringify(ignoreList));
+		}
+		else {
+			return;
+		}
+	}
 
 	client.listeners.forEach(listener => {
 		listener.execute(message);
