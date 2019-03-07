@@ -39,7 +39,7 @@ const wolframAlpha = (message) => {
 						message.channel.send({
 							files: [{
 								attachment: buffer,
-								name: 'result.gif',
+								name: 'result.png',
 							}],
 						});
 
@@ -50,7 +50,7 @@ const wolframAlpha = (message) => {
 			message.channel.send({
 				files: [{
 					attachment: resultImg,
-					name: 'result.gif',
+					name: 'result.png',
 				}],
 			});
 		}
