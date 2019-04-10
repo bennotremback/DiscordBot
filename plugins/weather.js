@@ -34,7 +34,7 @@ const processWeatherResponse = (response, address) => {
 	const tempF = temperature.toFixed(1);
 	const tempC = ((temperature - 32) * (5 / 9)).toFixed(1);
 	const pressure = response.body.currently.pressure.toFixed(1);
-	const humidity = response.body.currently.humidity * 100;
+	const humidity = (response.body.currently.humidity * 100).toFixed();
 	const windSpeedMiles = response.body.currently.windSpeed.toFixed(1);
 	const windSpeedKm = (windSpeedMiles * 1.609344).toFixed(1);
 
